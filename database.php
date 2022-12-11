@@ -21,5 +21,4 @@ class Database extends PDO{
             $this->$setter(trim($value));
         }
     }
-
 }

@@ -1,7 +1,7 @@
 <?php
 require_once('database.php');
 require_once('series.php');
-require_once('Books.php');
+require_once('books.php');
 ?>
 <?php
 if (!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit']))) {
@@ -19,6 +19,9 @@ if (!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit']))) {
 
     header('Location: index.php');
     exit();
+} else if (!empty($_POST) && isset($_POST['detail'])) {
+    $d = new Serie($_POST['id']);
+    $d->detail();
 }
 ?>
 <!DOCTYPE html>
@@ -34,7 +37,7 @@ if (!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit']))) {
 </head>
 
 <body>
-<?php require_once('navbar.php'); ?>
+    <?php require_once('navbar.php'); ?>
 
     <h1>Series</h1>
     <?php
@@ -50,29 +53,42 @@ if (!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit']))) {
     <?php endif;
     $t = Serie::all();
     ?>
-<a href="/addSeries.php">Ajouter une série</a>
-    <div class="row">
-        <?php
-        foreach ($t as $v) : ?>
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $v->getTitle() ?></h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <form action="/editSeries.php" method="get">
-                            <input type='hidden' name='edit' value='<?= $v->getId() ?>'>
-                            <p><button type="submit">Modifier</button></p>
-                        </form>
-                        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-                            <p><button type="submit" name="delete">Delete</button></p>
-                            <input type='hidden' name='id' value='<?= $v->getId() ?>'>
-                        </form>
+    <div class="container">
+
+        <form action="/search.php" method="post">
+            <div class="form-group d-flex">
+                <p><input class="form-control" type="text" name="title" id="text" placeholder="Volume 1"></p>
+                <p><button type="submit" name="search">Go</button></p>
+            </div>
+        </form>
+        <a href="/addSeries.php">Ajouter une série</a>
+        <div class="row">
+            <?php
+            foreach ($t as $v) : ?>
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $v->getTitle() ?></h5>
+                            <form action="/editSeries.php" method="get">
+                                <input type='hidden' name='edit' value='<?= $v->getId() ?>'>
+                                <p><button type="submit">Modifier</button></p>
+                            </form>
+                            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+                                <p><button type="submit" name="delete">Delete</button></p>
+                                <input type='hidden' name='id' value='<?= $v->getId() ?>'>
+                            </form>
+                            <form action="/seriesDetail.php" method="post">
+                                <p><button type="submit" name="detail">Voir plus</button></p>
+                                <input type='hidden' name='id' value='<?= $v->getId() ?>'>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 

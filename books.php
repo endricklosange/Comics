@@ -1,5 +1,6 @@
 <?php
 
+use Books as GlobalBooks;
 
 class Books extends Database
 {
@@ -21,11 +22,14 @@ class Books extends Database
     {
         parent::__construct();
         if (is_array($d)) {
+
             $this->hydrate($d);
         } else if (is_int($d) || (int) $d > 0) {
             $d = (int) $d;
-            $r = $this->prepare('SELECT * FROM books WHERE serie_id=:i');
-            $r->execute([':i' => 4]);
+            $r = $this->prepare('SELECT * FROM books WHERE id=:i');
+            $r->execute([':i' => $d]);
+
+
             if ($r->rowCount() > 0)
                 $this->hydrate($r->fetch(PDO::FETCH_ASSOC));
         }
@@ -230,10 +234,10 @@ class Books extends Database
 
         return $this;
     }
-    
+
     /**
      * Get the value of releaseyear
-     */ 
+     */
     public function getReleaseyear()
     {
         return $this->releaseyear;
@@ -243,17 +247,17 @@ class Books extends Database
      * Set the value of releaseyear
      *
      * @return  self
-     */ 
+     */
     public function setReleaseyear($releaseyear)
     {
         $this->releaseyear = $releaseyear;
 
         return $this;
     }
-    
+
     /**
      * Get the value of serie_id
-     */ 
+     */
     public function getSerie_id()
     {
         return $this->serie_id;
@@ -263,7 +267,7 @@ class Books extends Database
      * Set the value of serie_id
      *
      * @return  self
-     */ 
+     */
     public function setSerie_id($serie_id)
     {
         $this->serie_id = $serie_id;
@@ -272,16 +276,15 @@ class Books extends Database
     }
     // -------------------------------- fonctions 
 
-    public function Save()
+    public function Save($id)
     {
         if (empty($this->id)) {
             $n = $this->prepare('INSERT INTO books (writer, serie_id, title, num, illustrator, editor, releaseyear, strips, cover, rep) VALUES (:writer,:serie_id, :title, :num, :illustrator, :editor, :releaseyear, :strips, :cover, :rep)');
-            $n->execute([':writer' => $this->writer,':serie_id' => $this->serie_id, ':title' => $this->title ,':num' => $this->num, ':illustrator' => $this->illustrator,':editor' => $this->editor, ':releaseyear' => $this->releaseyear ,':strips' => $this->strips, ':cover' => $this->cover, ':rep' => $this->rep]);
+            $n->execute([':writer' => $this->writer, ':serie_id' => $id, ':title' => $this->title, ':num' => $this->num, ':illustrator' => $this->illustrator, ':editor' => $this->editor, ':releaseyear' => $this->releaseyear, ':strips' => $this->strips, ':cover' => $this->cover, ':rep' => $this->rep]);
         } else {
             $n = $this->prepare('UPDATE books SET serie_id = :serie_id, title = :title, num = :num, illustrator = :illustrator, editor = :editor, releaseyear = :releaseyear, strips = :strips, cover = :cover, rep = :rep WHERE id=:i');
-            $n->execute([':serie_id' => $this->serie_id, ':title' => $this->title ,':num' => $this->num, ':illustrator' => $this->illustrator,':editor' => $this->editor, ':releaseyear' => $this->releaseyear ,':strips' => $this->strips, ':cover' => $this->cover, ':rep' => $this->rep]);
+            $n->execute([':serie_id' => $id, ':title' => $this->title, ':num' => $this->num, ':illustrator' => $this->illustrator, ':editor' => $this->editor, ':releaseyear' => $this->releaseyear, ':strips' => $this->strips, ':cover' => $this->cover, ':rep' => $this->rep]);
         }
-
     }
 
     public function isValid()
@@ -296,6 +299,45 @@ class Books extends Database
 
         return true;
     }
+    public static function allCount()
+    {
+        //instance de base de données
+        $sql = new Database();
+        // on recup toutes les lignes
+        $tAll = [];
+        $r = $sql->prepare('SELECT * FROM books');
+        $r->execute();
+        while ($one = $r->fetch(PDO::FETCH_ASSOC)) {
+            array_push($tAll, new Books($one));
+        }
+        return $tAll;
+    }
+    public static function allWriter()
+    {
+        //instance de base de données
+        $sql = new Database();
+        // on recup toutes les lignes
+        $tAll = [];
+        $r = $sql->prepare('SELECT DISTINCT `writer` FROM books');
+        $r->execute();
+        while ($one = $r->fetch(PDO::FETCH_ASSOC)) {
+            array_push($tAll, new Books($one));
+        }
+        return $tAll;
+    }
+    public static function allStrips()
+    {
+        //instance de base de données
+        $sql = new Database();
+        // on recup toutes les lignes
+        $tAll = [];
+        $r = $sql->prepare('SELECT `strips` FROM books');
+        $r->execute();
+        while ($one = $r->fetch(PDO::FETCH_ASSOC)) {
+            array_push($tAll, new Books($one));
+        }
+        return $tAll;
+    }
     public function delete()
     {
         $n = $this->prepare('DELETE FROM books WHERE id = :i');
@@ -304,12 +346,20 @@ class Books extends Database
 
     public function all($id)
     {
-        //instance de base de données
-        $sql = new Database();
-        // on recup toutes les lignes
-        $tAll = [];
-        $n = $sql->prepare('SELECT * FROM `books` WHERE series_id = :i');
+
+        $n = $this->prepare('SELECT * FROM `books` WHERE serie_id = :i');
         $n->execute([':i' => $id]);
+        $tAll = [];
+        while ($one = $n->fetch(PDO::FETCH_ASSOC)) {
+            array_push($tAll, new Books($one));
+        }
+        return $tAll;
+    }
+    public function detail()
+    {
+        $n = $this->prepare('SELECT * FROM `books`WHERE id = :i');
+        $n->execute([':i' => $this->id]);
+        $tAll = [];
         while ($one = $n->fetch(PDO::FETCH_ASSOC)) {
             array_push($tAll, new Books($one));
         }

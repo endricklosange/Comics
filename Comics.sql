@@ -2,10 +2,10 @@
 -- version 5.1.1deb5ubuntu1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:3306
--- Généré le : sam. 10 déc. 2022 à 18:58
+-- Hôte : 127.0.0.1:3306
+-- Généré le : mar. 13 déc. 2022 à 23:32
 -- Version du serveur : 8.0.30-0ubuntu0.22.04.1
--- Version de PHP : 8.1.11
+-- Version de PHP : 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,7 +39,7 @@ CREATE TABLE `books` (
   `editor` varchar(100) DEFAULT NULL,
   `releaseyear` smallint DEFAULT NULL,
   `strips` smallint DEFAULT NULL,
-  `cover` varchar(30) DEFAULT NULL,
+  `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `rep` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -48,17 +48,11 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`id`, `created`, `updated`, `serie_id`, `title`, `num`, `writer`, `illustrator`, `editor`, `releaseyear`, `strips`, `cover`, `rep`) VALUES
-(1, '2022-11-09 14:56:26', '2022-11-09 14:56:26', 4, 'Volume 1', '1', 'Watanabe, Tsunehiko', 'Hinotsuki, Neko\r\n Ayakura, Jyuu', 'Delcourt', 2019, 190, NULL, 1),
-(2, '2022-11-09 14:56:26', '2022-11-09 14:56:26', 4, 'Volume 2', '2', 'Watanabe, Tsunehiko', 'Hinotsuki, Neko', 'Delcourt', 2019, 182, NULL, 0),
-(3, '2022-11-09 14:57:23', '2022-11-09 14:57:23', 4, 'Volume 3', '3', 'Watanabe, Tsunehiko', 'Hinotsuki, Neko', 'Delcourt', 2019, 172, NULL, 0),
-(4, '2022-11-09 15:01:26', '2022-11-09 15:01:26', 2, 'Volume 1', '1', 'Migliardo, Emiliano', 'Migliardo, Emiliano', 'Éditions Caramel', 2015, 32, NULL, 0),
-(5, '2022-11-09 15:01:26', '2022-11-09 15:01:26', 2, 'Volume 2', '2', 'Migliardo, Emiliano', 'Migliardo, Emiliano', 'Éditions Caramel', 2015, 32, NULL, 0),
-(6, '2022-11-09 15:01:26', '2022-11-09 15:01:26', 2, 'Cache-cache au bout du monde\r\n', '3', 'Stettler, Jérôme', 'Stettler, Jérôme', 'La Joie de Lire', 2005, 30, NULL, 1),
-(8, '2022-11-09 15:05:21', '2022-11-09 15:05:21', 3, 'Issue 1 ', '1', 'Austen, Chuck', 'Finch, David', 'Marvel Comics', 2018, NULL, NULL, 1),
-(9, '2022-11-09 15:05:21', '2022-11-09 15:05:21', 3, 'Issue 2', '2', 'Austen, Chuck', 'Finch, David', 'Marvel Comics', 2018, NULL, NULL, 0),
-(10, '2022-11-09 15:05:21', '2022-11-09 15:05:21', 3, 'Issue 3 ', '3', 'Austen, Chuck', 'Finch, David', 'Marvel Comics', 2018, NULL, NULL, 0),
-(11, '2022-11-09 15:07:40', '2022-11-09 15:07:40', 5, 'Vol 1', '', 'Hojo, Tsukasa', 'Hojo, Tsukasa', 'Tonkam', 2002, 193, NULL, 1),
-(12, '2022-11-09 15:07:40', '2022-11-09 15:07:40', 5, 'Vol 2 ', '2', 'Hojo, Tsukasa', 'Hojo, Tsukasa', 'Tonkam', 2002, 214, NULL, 0);
+(21, '2022-12-13 23:19:18', '2022-12-13 23:24:27', 14, 'Naruto Uzumaki', '1', 'Kishimoto, Masashi', 'Kishimoto, Masashi', 'Kana', 2003, 192, 'https://www.bedetheque.com/media/Couvertures/naruto01.JPG', 0),
+(23, '2022-12-13 23:26:13', '2022-12-13 23:26:13', 14, 'Un client embarrassant', '2', 'Kishimoto, Masashi', 'Kishimoto, Masashi', 'Kana', 2003, 208, 'https://www.bedetheque.com/media/Couvertures/Couv_24064.jpg', 0),
+(24, '2022-12-13 23:28:56', '2022-12-13 23:28:56', 16, 'The Death and the Strawberry', '1', 'Kubo, Tite', 'Kubo, Tite', 'Glénat', 2003, 187, 'https://www.bedetheque.com/media/Couvertures/Couv_29939.jpg', 0),
+(25, '2022-12-13 23:30:40', '2022-12-13 23:30:40', 16, 'Goodbye Parakeet, Goodnite my Sista', '2', 'Kubo, Tite', 'Kubo, Tite', 'Glénat', 2003, 185, 'https://www.bedetheque.com/media/Couvertures/Couv_31669.jpg', 0),
+(26, '2022-12-13 23:32:19', '2022-12-13 23:32:19', 17, 'À l\'aube d\'une grande aventure', '1', 'Oda, Eiichirô', 'Oda, Eiichirô', 'Glénat', 2011, 204, 'https://www.bedetheque.com/media/Couvertures/Couv_141352.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -79,11 +73,9 @@ CREATE TABLE `series` (
 --
 
 INSERT INTO `series` (`id`, `created`, `updated`, `title`, `origin`) VALUES
-(2, '2022-11-09 14:25:50', '2022-11-09 14:25:50', 'Cache-cache', 'BD'),
-(3, '2022-11-09 14:25:50', '2022-11-09 14:25:50', 'Call of Duty: The Brotherhood', 'comics'),
-(4, '2022-11-09 14:28:31', '2022-11-09 14:36:49', 'A Fantasy lazy life', 'Manga'),
-(5, '2022-11-09 14:36:28', '2022-11-09 16:14:43', 'Rash!!', 'Manga'),
-(8, '2022-11-09 16:13:52', '2022-11-09 16:13:52', 'dzefz', 'manga');
+(14, '2022-12-13 23:15:07', '2022-12-13 23:15:07', 'Naruto', 'mangas'),
+(16, '2022-12-13 23:15:38', '2022-12-13 23:17:26', 'Bleach', 'mangas'),
+(17, '2022-12-13 23:17:18', '2022-12-13 23:17:18', 'One piece', 'mangas');
 
 --
 -- Index pour les tables déchargées
@@ -110,13 +102,13 @@ ALTER TABLE `series`
 -- AUTO_INCREMENT pour la table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT pour la table `series`
 --
 ALTER TABLE `series`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Contraintes pour les tables déchargées
@@ -126,7 +118,7 @@ ALTER TABLE `series`
 -- Contraintes pour la table `books`
 --
 ALTER TABLE `books`
-  ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`serie_id`) REFERENCES `series` (`id`);
+  ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`serie_id`) REFERENCES `series` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

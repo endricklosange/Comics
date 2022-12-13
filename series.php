@@ -193,6 +193,26 @@ class Serie extends Database
     public static function randSerie()
     {
         $allSeries = Serie::all();
-       var_dump($allSeries[rand(0,count($allSeries))]); 
+        $random = $allSeries[rand(0, count($allSeries)-1)];
+        return $random;
+    }
+    public function detail()
+    {
+        $n = $this->prepare('SELECT * FROM `series`WHERE id = :i');
+        $n->execute([':i' => $this->id]);
+        $tAll = [];
+        while ($one = $n->fetch(PDO::FETCH_ASSOC)) {
+            array_push($tAll, new Serie($one));
+        }
+        return $tAll;
+    }
+    public function search($string){
+        $n = $this->prepare("SELECT * FROM `series`WHERE title LIKE '%".$string."%'");
+        $n->execute();
+        $tAll = [];
+        while ($one = $n->fetch(PDO::FETCH_ASSOC)) {
+            array_push($tAll, new Serie($one));
+        }
+        return $tAll;
     }
 }

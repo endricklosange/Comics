@@ -8,7 +8,13 @@ if (!empty($_POST) && isset($_POST['detail'])) {
     $b = new Books($_POST['id']);
     $series = $s->detail($_POST['id'])[0];
     $allBooks = $b->all($_POST['id']);
-}
+}else if (!empty($_POST) && isset($_POST['delete'])) {
+    $d = new Books($_POST['id']);
+    $d->delete();
+
+    header('Location: index.php');
+    exit();
+} 
 ?>
 
 <head>
@@ -35,13 +41,17 @@ if (!empty($_POST) && isset($_POST['detail'])) {
             <?php foreach ($allBooks as $books) { ?>
                 <div class="col-md-4">
                     <div class="card my-2">
-                        <img src="<?= $books->getCover() ?>" class="card-img-top" alt="..." width="50%" height="50%">
+                        <img src="/assets/uploads/<?= $books->getCover() ?>" class="card-img-top" alt="..." width="50%" height="50%">
                         <div class="card-body">
                             <h5 class="card-title"><?= $books->getTitle() ?></h5>
                             <form action="/editBooks.php" method="get">
                             <input type='hidden' name='edit' value='<?= $books->getId() ?>'>
                             <p><button type="submit">Modifier</button></p>
                         </form>
+                        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+                                <p><button type="submit" name="delete">Delete</button></p>
+                                <input type='hidden' name='id' value='<?= $books->getId() ?>'>
+                            </form>
                         </form>
                             <form action="/booksDetail.php" method="post">
                                 <p><button type="submit" name="detail">Voir plus</button></p>

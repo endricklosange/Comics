@@ -183,7 +183,7 @@ class Serie extends Database
         $sql = new Database();
         // on recup toutes les lignes
         $tAll = [];
-        $r = $sql->prepare('SELECT * FROM series ORDER BY title');
+        $r = $sql->prepare('SELECT * FROM `series`');
         $r->execute();
         while ($one = $r->fetch(PDO::FETCH_ASSOC)) {
             array_push($tAll, new Serie($one));
@@ -207,7 +207,7 @@ class Serie extends Database
         return $tAll;
     }
     public function search($string){
-        $n = $this->prepare("SELECT * FROM `series`WHERE title LIKE '%".$string."%'");
+        $n = $this->prepare("SELECT * FROM `series`WHERE title LIKE '%".$string."%' OR origin LIKE '%".$string."%'");
         $n->execute();
         $tAll = [];
         while ($one = $n->fetch(PDO::FETCH_ASSOC)) {

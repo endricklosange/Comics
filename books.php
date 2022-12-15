@@ -276,14 +276,14 @@ class Books extends Database
     }
     // -------------------------------- fonctions 
 
-    public function Save($id)
+    public function Save($id,$cover,$rep)
     {
         if (empty($this->id)) {
             $n = $this->prepare('INSERT INTO books (writer, serie_id, title, num, illustrator, editor, releaseyear, strips, cover, rep) VALUES (:writer,:serie_id, :title, :num, :illustrator, :editor, :releaseyear, :strips, :cover, :rep)');
-            $n->execute([':writer' => $this->writer, ':serie_id' => $id, ':title' => $this->title, ':num' => $this->num, ':illustrator' => $this->illustrator, ':editor' => $this->editor, ':releaseyear' => $this->releaseyear, ':strips' => $this->strips, ':cover' => $this->cover, ':rep' => $this->rep]);
+            $n->execute([':writer' => $this->writer, ':serie_id' => $id, ':title' => $this->title, ':num' => $this->num, ':illustrator' => $this->illustrator, ':editor' => $this->editor, ':releaseyear' => $this->releaseyear, ':strips' => $this->strips, ':cover' => $cover, ':rep' => $rep]);
         } else {
             $n = $this->prepare('UPDATE books SET serie_id = :serie_id, title = :title, num = :num, illustrator = :illustrator, editor = :editor, releaseyear = :releaseyear, strips = :strips, cover = :cover, rep = :rep WHERE id=:i');
-            $n->execute([':serie_id' => $id, ':title' => $this->title, ':num' => $this->num, ':illustrator' => $this->illustrator, ':editor' => $this->editor, ':releaseyear' => $this->releaseyear, ':strips' => $this->strips, ':cover' => $this->cover, ':rep' => $this->rep]);
+            $n->execute([':serie_id' => $id, ':title' => $this->title, ':num' => $this->num, ':illustrator' => $this->illustrator, ':editor' => $this->editor, ':releaseyear' => $this->releaseyear, ':strips' => $this->strips, ':cover' => $cover, ':rep' => $rep,':i' => $this->id]);
         }
     }
 

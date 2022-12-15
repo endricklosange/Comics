@@ -1,0 +1,19 @@
+h3.card-title {
+  font-weight: 400;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+h2.card-title {
+  font-size: 1.5em;
+}
+h4.card-title {
+  font-size: 1em;
+  margin-bottom: 50px;
+  max-height: 18.9px;
+}
+.customCard {
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 27px;
+}

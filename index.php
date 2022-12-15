@@ -29,18 +29,13 @@ if (!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit']))) {
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <?php require_once('head.php') ?>
     <title>series</title>
 </head>
 
 <body>
-    <?php require_once('navbar.php'); ?>
+    <?php require_once('navbar.php');
 
-    <h1>Series</h1>
-    <?php
     if (!empty($_GET['edit'])) :
         $o = new Serie($_GET['edit']); ?>
         <h2>Modifier</h2>
@@ -54,34 +49,56 @@ if (!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit']))) {
     $t = Serie::all();
     ?>
     <div class="container">
-
+        <h1>Series</h1>
         <form action="/search.php" method="post">
             <div class="form-group d-flex">
-                <p><input class="form-control" type="text" name="title" id="text" placeholder="Volume 1"></p>
+                <p><input class="form-control" type="text" name="title" id="text" placeholder="Bleach"></p>
                 <p><button type="submit" name="search">Go</button></p>
             </div>
         </form>
         <a href="/addSeries.php">Ajouter une série</a>
-        <div class="row">
+        <div class="row my-2">
             <?php
             foreach ($t as $v) : ?>
-                <div class="col-md-4">
-                    <div class="card" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $v->getTitle() ?></h5>
-                            <form action="/editSeries.php" method="get">
-                                <input type='hidden' name='edit' value='<?= $v->getId() ?>'>
-                                <p><button type="submit">Modifier</button></p>
-                            </form>
-                            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-                                <p><button type="submit" name="delete">Delete</button></p>
-                                <input type='hidden' name='id' value='<?= $v->getId() ?>'>
-                            </form>
-                            <form action="/seriesDetail.php" method="post">
-                                <p><button type="submit" name="detail">Voir plus</button></p>
-                                <input type='hidden' name='id' value='<?= $v->getId() ?>'>
-                            </form>
+                <?php
+                $b = new Books($v->getId());
+                if (isset($b->all($v->getId())[0])) {
+                    $book = $b->all($v->getId());
+                } else {
+                }
+                ?>
+                <div class="col-md-3">
+                    <div class="customCard">
+                        <div class="row">
+                            <div class="col-md-4 ">
+                                <?php if (isset($b->all($v->getId())[0])) { ?>
+                                    <img src="/assets/uploads/<?= $book[0]->getCover(); ?>" class="card-img-top" alt="...">
+                                <?php } else { ?>
+                                    <img src="/assets/img/no-image.jpg" class="card-img-top" alt="...">
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-8">
+                                <h2 class="card-title"><?= $v->getTitle() ?> </h2>
+                                <h3 class="card-title"><?= $v->getOrigin() ?> </h3>
+                                <?php if (isset($b->all($v->getId())[0])) { ?>
+                                    <h4 class="card-title">Scénario : <?= $book[0]->getWriter() ?> </h4>
+                                <?php } ?>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <form action="/editSeries.php" method="get">
+                                            <input type='hidden' name='edit' value='<?= $v->getId() ?>'>
+                                            <p><button type="submit" class="btn btn-outline-primary">Editer</button></p>
+                                        </form>
+                                    </div>
+                                    <div class="col-6">
+                                        <form action="/seriesDetail.php" method="post">
+                                            <p><button type="submit" class="btn btn-primary" name="detail">Détails</button></p>
+                                            <input type='hidden' name='id' value='<?= $v->getId() ?>'>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

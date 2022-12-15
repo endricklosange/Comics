@@ -12,12 +12,22 @@ if (isset($_GET['edit']) && empty($_GET['edit'])) {
 }
 if (!empty($_POST) && (isset($_POST['addBooks']))) {
     $new = new Books($_POST);
+    $uploadDir = 'assets/uploads/';
+    // le nom de fichier sur le serveur est celui du nom d'origine du fichier sur le poste du client (mais d'autres stratégies de nommage sont possibles)
+    $uploadFile = $uploadDir . basename($_FILES['avatar']['name']);
 
-        $new->save($_POST['seriesId']);
+    // on déplace le fichier temporaire vers le nouvel emplacement sur le serveur. Ça y est, le fichier est uploadé
+    move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadFile);
+    if (empty($_FILES['avatar']['name'])) {
+        $new->save($_POST['seriesId'],'no-image.jpg',0);
+    }else {
+        $new->save($_POST['seriesId'],$_FILES['avatar']['name'],1);
+    }
 
     header('Location: index.php');
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 
@@ -33,7 +43,7 @@ if (!empty($_POST) && (isset($_POST['addBooks']))) {
 
 <body>
     <h2>Ajouter un Albums</h2>
-    <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+    <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">titre</label>
             <p><input class="form-control" type="text" name="title" id="title" placeholder="Volume 1"></p>
@@ -64,16 +74,9 @@ if (!empty($_POST) && (isset($_POST['addBooks']))) {
             <label for="strips">Planches </label>
             <p><input class="form-control" type="text" name="strips" id="strips" placeholder="164"></p>
         </div>
-        <div class="form-group">
-            <label for="cover">Image de couverture</label>
-            <p><input class="form-control" type="text" name="cover" id="cover" placeholder="Couv_366684.jpg"></p>
-        </div>
-        <div class="form-group">
-            <label selected>Image principale de la série</label>
-            <select class="form-select" aria-label="Default select example" name="rep">
-                <option selected value="0">Non</option>
-                <option value="1">Oui</option>
-            </select>
+        <div class="form-group d-flex flex-column">
+            <label for="cover" class="form-label">Image de couverture</label>
+            <input type="file" name="avatar" id="cover" />
         </div>
         <input type='hidden' name='seriesId' value='<?= $seriesId ?>'>
 

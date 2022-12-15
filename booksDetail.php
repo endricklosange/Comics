@@ -22,7 +22,7 @@ if (!empty($_POST) && isset($_POST['detail'])) {
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                    <img src="<?= $books->getCover() ?>" class="card-img-top" alt="...">
+                    <img src="/assets/uploads/<?= $books->getCover() ?>" class="card-img-top" alt="...">
                 </div>
             <div class="col-md-8">
             <h1 >Titre : <?= $books->getTitle() ?></h1>

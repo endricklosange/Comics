@@ -13,7 +13,20 @@ h4.card-title {
   max-height: 18.9px;
 }
 .customCard {
-    padding: 20px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: 27px;
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 27px;
+}
+.firstRow {
+  height: 100vh;
+}
+.firstRow .col-md-2,
+nav.navbar.navbar-expand-lg.navbar-light.bg-light {
+  background-color: #0d6efd !important;
+}
+a.nav-link {
+    color: white;
+}
+div#navbarNav {
+    justify-content: center;
 }

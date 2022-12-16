@@ -61,7 +61,7 @@ if (!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit']))) {
                         } else {
                         }
                         ?>
-                        <div class="col-md-3 my-2git">
+                        <div class="col-md-3 my-2">
                             <div class="customCard">
                                 <div class="row">
                                     <div class="col-md-4 ">

@@ -50,7 +50,7 @@ if (!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit']))) {
                         <p><button type="submit" class="btn btn-primary" name="search">Go</button></p>
                     </div>
                 </form>
-                <a href="/addSeries.php">Ajouter une série</a>
+                <a href="/addSeries.php" class="btn btn-primary">Ajouter une série</a>
                 <div class="row my-2">
                     <?php
                     foreach ($t as $v) : ?>

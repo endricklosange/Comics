@@ -25,7 +25,7 @@ if (!empty($_POST) && (isset($_POST['addBooks']))) {
     }
 
     header('Location: index.php');
-    exit();
+    exit   ();
 }
 
 ?>

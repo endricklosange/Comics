@@ -8,13 +8,7 @@ if (!empty($_POST) && isset($_POST['detail'])) {
     $b = new Books($_POST['id']);
     $series = $s->detail($_POST['id'])[0];
     $allBooks = $b->all($_POST['id']);
-} else if (!empty($_POST) && isset($_POST['delete'])) {
-    $d = new Books($_POST['id']);
-    $d->delete();
-
-    header('Location: index.php');
-    exit();
-}
+} 
 ?>
 
 <head>
